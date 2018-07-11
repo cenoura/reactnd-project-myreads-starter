@@ -1,6 +1,7 @@
-import React, { Component } from "react"
-import { Link } from "react-router-dom"
-import * as BooksAPI from "./BooksAPI"
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { DebounceInput } from "react-debounce-input";
+import * as BooksAPI from "./BooksAPI";
 import Book from "./Book";
 
 class BookSearch extends Component {
@@ -44,10 +45,13 @@ class BookSearch extends Component {
                     books: books
                 });
             })
+            .catch(error => {
+                alert('An error ocurred while the search was executed.');
+            });
     }
 
     render() {
-        const { booksOnShelves, moveBook } = this.props;
+        const { moveBook } = this.props;
 
         const { books, query } = this.state;
 
@@ -56,10 +60,12 @@ class BookSearch extends Component {
                 <div className="search-books-bar">
                     <Link to="/" className="close-search">Close</Link>
                     <div className="search-books-input-wrapper">
-                        <input
+                        <DebounceInput
+                            minLength={1}
+                            debounceTimeout={500}
                             type="text"
                             placeholder="Search by title or author"
-                            onChange={(e) => this.updateResults(e.target.value)}
+                            onChange={event => this.updateResults(event.target.value)}
                         />
                     </div>
                 </div>
