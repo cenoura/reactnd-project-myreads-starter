@@ -11,9 +11,14 @@ class BooksApp extends Component {
     };
 
     componentDidMount() {
-        BooksAPI.getAll().then((books) => {
-            this.setState({ books })
-        });
+        BooksAPI
+            .getAll()
+            .then((books) => {
+                this.setState({ books })
+            })
+            .catch(error => {
+                alert('An error ocurred while loading your books.');
+            });
     }
 
     updateBookShelf = (book, shelf) => {
